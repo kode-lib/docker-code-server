@@ -1,8 +1,10 @@
 FROM alpine:3.12
 
+# hadolint ignore=DL3016,DL3018
 RUN apk add --no-cache curl nodejs npm alpine-sdk bash libstdc++ libc6-compat libx11-dev libxkbfile-dev libsecret-dev \
     && npm install -g yarn \
-    && yarn global add code-server@3.8.0
+    && yarn global add code-server@3.8.0 \
+    && yarn cache clean
 
 ENV SHELL /bin/bash
 

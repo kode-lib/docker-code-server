@@ -1,0 +1,21 @@
+versio: "1.0"
+
+variables:
+  IMAGE_NAME: "code-server"
+
+jobs:
+  main:
+    commands:
+      - docker run --rm -p 8080:8080 -e PASSWORD=1234567890 "${IMAGE_NAME}"
+
+  lint:
+    commands:
+      - hadolint Dockerfile
+
+  build:
+    commands:
+      - docker build -t "${IMAGE_NAME}" .
+      - IMAGE_SIZE=$(docker images --format "{{ json . }}" "${IMAGE_NAME}" | jq -r .Size)
+      - echo ; echo "--- Total image size is ${IMAGE_SIZE} ---"
+    needs:
+      - lint
