@@ -1,21 +1,69 @@
 versio: "1.0"
 
-variables:
-  IMAGE_NAME: "code-server"
+# variables:
+#   VERSION: "3.8.0"
 
 jobs:
   main:
+    description: Run code-server locally
     commands:
-      - docker run --rm -p 8080:8080 -e PASSWORD=1234567890 "${IMAGE_NAME}"
+      - >
+        docker run --rm 
+        --publish 8080:8080 
+        --env PASSWORD=1234567890 
+        kodelib/code-server-crystal:${VERSION}
 
   lint:
     commands:
-      - hadolint Dockerfile
+      - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
 
   build:
+    description: Build all variants locally
     commands:
-      - docker build -t "${IMAGE_NAME}" .
-      - IMAGE_SIZE=$(docker images --format "{{ json . }}" "${IMAGE_NAME}" | jq -r .Size)
-      - echo ; echo "--- Total image size is ${IMAGE_SIZE} ---"
+      - docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" "kodelib/code-server*:${VERSION}"
+    needs:
+      - build:crystal
+      - build:perl
+
+  build:base:
+    variables:
+      IMAGE_NAME: kodelib/code-server
+    commands:
+      - >
+        docker build ./base
+        --build-arg VERSION="${VERSION}"
+        --tag "${IMAGE_NAME}:${VERSION}"
     needs:
       - lint
+
+  build:crystal:
+    variables:
+      IMAGE_NAME: kodelib/code-server-crystal
+    commands:
+      - >
+        docker build ./crystal
+        --build-arg VERSION="${VERSION}"
+        --tag "${IMAGE_NAME}:${VERSION}"
+        --quiet
+    needs:
+      - lint
+      - build:base
+
+  build:perl:
+    variables:
+      IMAGE_NAME: kodelib/code-server-perl
+    commands:
+      - >
+        docker build ./perl
+        --build-arg VERSION="${VERSION}"
+        --tag "${IMAGE_NAME}:${VERSION}"
+        --quiet
+    needs:
+      - lint
+      - build:base
+
+  push:
+    commands:
+      - docker push kodelib/code-server:$VERSION
+      - docker push kodelib/code-server-crystal:$VERSION
+      - docker push kodelib/code-server-perl:$VERSION
