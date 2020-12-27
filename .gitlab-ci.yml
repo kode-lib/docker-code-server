@@ -1,0 +1,71 @@
+stages:
+  - test
+  - build
+
+lint:dockerfile:
+  stage: test
+  image: hadolint/hadolint:v1.19.0-alpine
+  script:
+    - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
+
+build:docker:
+  stage: build
+  services:
+    - docker:dind
+  image: boord/werk:0.1.11
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - apk add --no-cache docker
+  script:
+    - docker info
+    - werk plan build
+
+# build:base:
+#   stage: test
+#   image: 
+#     name: gcr.io/kaniko-project/executor:latest
+#     entrypoint: [""]
+#   script:
+#     - >
+#       /kaniko/executor
+#       --context ./base
+#       --dockerfile ./base/Dockerfile
+#       --build-arg VERSION=${CI_COMMIT_TAG}
+#       --no-push
+#   only:
+#     - tags
+
+# build:crystal:
+#   stage: test
+#   image:
+#     name: gcr.io/kaniko-project/executor:latest
+#     entrypoint: [""]
+#   script:
+#     - >
+#       /kaniko/executor
+#       --context ./crystal
+#       --dockerfile ./crystal
+#       --build-arg VERSION=${CI_COMMIT_TAG}
+#       --no-push
+#   only:
+#     - tags
+#   needs:
+#     - build:base
+
+# build:perl:
+#   stage: test
+#   image:
+#     name: gcr.io/kaniko-project/executor:latest
+#     entrypoint: [""]
+#   script:
+#     - >
+#       /kaniko/executor
+#       --context ./perl
+#       --dockerfile ./perl
+#       --build-arg VERSION=${CI_COMMIT_TAG}
+#       --no-push
+#   only:
+#     - tags
+#   needs:
+#     - build:base
