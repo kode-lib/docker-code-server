@@ -14,11 +14,13 @@ jobs:
         kodelib/code-server-crystal:${VERSION}
 
   lint:
+    description: Check all Docker files
     commands:
+      - hadolint --version
       - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
 
   build:
-    description: Build all variants locally
+    description: Build all image variants
     commands:
       - docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" "kodelib/code-server*:${VERSION}"
     needs:
@@ -26,11 +28,12 @@ jobs:
       - build:perl
 
   build:base:
+    description: Build base image
     variables:
       IMAGE_NAME: kodelib/code-server
     commands:
       - >
-        docker build ./base
+        docker build .
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
     needs:
@@ -41,7 +44,7 @@ jobs:
       IMAGE_NAME: kodelib/code-server-crystal
     commands:
       - >
-        docker build ./crystal
+        docker build ./variants/crystal
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
         --quiet
@@ -54,7 +57,7 @@ jobs:
       IMAGE_NAME: kodelib/code-server-perl
     commands:
       - >
-        docker build ./perl
+        docker build ./variants/perl
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
         --quiet
@@ -63,7 +66,10 @@ jobs:
       - build:base
 
   push:
+    description: Push images to Docker Registry
     commands:
       - docker push kodelib/code-server:$VERSION
       - docker push kodelib/code-server-crystal:$VERSION
       - docker push kodelib/code-server-perl:$VERSION
+    needs:
+      - build
