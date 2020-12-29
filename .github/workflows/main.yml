@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -12,13 +12,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Hadolint Action
+        uses: brpaz/hadolint-action@v1.1.0
+
       - name: Install prerequisites
         env:
           WERK_URL: https://github.com/marghidanu/werk/releases/download/0.1.11/werk-ubuntu-18.04
         run: |
           sudo curl -sL "${WERK_URL}" -o /usr/local/bin/werk
           sudo chmod a+x /usr/local/bin/werk
-          werk --version
+      
+      - name: Quality
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+        run: |
+          brew install hadolint
+          werk run lint
 
       - name: Build images
         run: |

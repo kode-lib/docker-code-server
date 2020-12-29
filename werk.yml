@@ -36,8 +36,6 @@ jobs:
         docker build .
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
-    needs:
-      - lint
 
   build:crystal:
     variables:
@@ -49,7 +47,6 @@ jobs:
         --tag "${IMAGE_NAME}:${VERSION}"
         --quiet
     needs:
-      - lint
       - build:base
 
   build:perl:
@@ -62,7 +59,6 @@ jobs:
         --tag "${IMAGE_NAME}:${VERSION}"
         --quiet
     needs:
-      - lint
       - build:base
 
   push:
@@ -71,5 +67,3 @@ jobs:
       - docker push kodelib/code-server:$VERSION
       - docker push kodelib/code-server-crystal:$VERSION
       - docker push kodelib/code-server-perl:$VERSION
-    needs:
-      - build
