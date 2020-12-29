@@ -45,7 +45,6 @@ jobs:
         docker build ./variants/crystal
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
-        --quiet
     needs:
       - build:base
 
@@ -57,7 +56,6 @@ jobs:
         docker build ./variants/perl
         --build-arg VERSION="${VERSION}"
         --tag "${IMAGE_NAME}:${VERSION}"
-        --quiet
     needs:
       - build:base
 
