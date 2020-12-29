@@ -16,7 +16,7 @@ jobs:
         env:
           WERK_URL: https://github.com/marghidanu/werk/releases/download/0.1.11/werk-ubuntu-18.04
         run: |
-          sudo curl -sL "${WERK_URL}" -o /usr/loca/binl/werk
+          sudo curl -sL "${WERK_URL}" -o /usr/local/bin/werk
           sudo chmod a+x /usr/local/bin/werk
           werk --version
 
