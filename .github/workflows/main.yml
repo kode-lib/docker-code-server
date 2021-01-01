@@ -14,10 +14,11 @@ jobs:
 
       - name: Install prerequisites
         env:
-          WERK_URL: https://github.com/marghidanu/werk/releases/download/0.1.11/werk-ubuntu-18.04
+          WERK_URL: https://github.com/marghidanu/werk/releases/download/0.2.0/werk-ubuntu-18.04
         run: |
           sudo curl -sL "${WERK_URL}" -o /usr/local/bin/werk
           sudo chmod a+x /usr/local/bin/werk
+          werk --version
       
       - name: Quality
         env:
@@ -28,7 +29,7 @@ jobs:
 
       - name: Build images
         run: |
-          werk run build
+          werk run build -j 1
 
       - name: Publish images
         run: |
