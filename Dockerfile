@@ -14,7 +14,12 @@ ENV SHELL /bin/bash
 
 WORKDIR /opt/workspace
 
-HEALTHCHECK CMD curl --fail http://localhost:8080/healthz || exit 1
+RUN code-server --install-extension tyriar.sort-lines \
+    && code-server --install-extension wmaurer.change-case \
+    && code-server --install-extension adrientoub.base64utils
+
+HEALTHCHECK \
+    CMD curl --fail http://localhost:8080/healthz || exit 1
 
 ENTRYPOINT [ "code-server", "--host=0.0.0.0" ]
 CMD [ "/opt/workspace"]
