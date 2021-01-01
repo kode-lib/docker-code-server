@@ -22,5 +22,5 @@ HEALTHCHECK \
 
 WORKDIR /opt/workspace
 
-ENTRYPOINT [ "code-server", "--host=0.0.0.0" ]
+ENTRYPOINT [ "code-server", "--disable-telemetry", "--home=https://kodelib.com", "--host=0.0.0.0" ]
 CMD [ "/opt/workspace"]
