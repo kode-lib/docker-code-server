@@ -8,7 +8,7 @@ jobs:
     description: Run code-server locally
     commands:
       - >
-        docker run --rm 
+        docker run -t --rm 
         --publish 8080:8080 
         --env PASSWORD=1234567890 
         kodelib/code-server-crystal:${VERSION}
