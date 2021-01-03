@@ -9,4 +9,4 @@ RUN apk add --no-cache wget perl perl-dev \
     && curl -sL https://cpanmin.us | perl - --curl App::cpanminus \
     && cpanm -nq local::lib
 
-USER developer
+USER kodelib

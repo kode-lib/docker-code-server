@@ -13,10 +13,10 @@ RUN npm install -g yarn@1.22.10 \
 
 COPY /scripts/entrypoint.sh /entrypoint.sh
 
-RUN adduser -D developer --shell /bin/bash \
-    && echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/nopasswd
+RUN adduser -D kodelib --shell /bin/bash \
+    && echo "kodelib ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/nopasswd
 
-USER developer
+USER kodelib
 
 ENTRYPOINT ["/entrypoint.sh"]
 

@@ -7,4 +7,4 @@ USER root
 # hadolint ignore=DL3018
 RUN apk add --no-cache crystal shards
 
-USER developer
+USER kodelib
