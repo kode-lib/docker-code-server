@@ -2,17 +2,21 @@ FROM alpine:3.12
 
 ARG VERSION
 
-# hadolint ignore=DL3018,SC2086
-RUN apk add --no-cache curl nodejs npm alpine-sdk bash zsh libstdc++ libc6-compat libx11-dev libxkbfile-dev libsecret-dev \
-    && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
-    && npm install -g yarn@1.22.10 \
+# hadolint ignore=DL3018
+RUN apk add --no-cache curl nodejs npm sudo alpine-sdk bash \
+    libstdc++ libc6-compat libx11-dev libxkbfile-dev libsecret-dev
+
+# hadolint ignore=SC2086
+RUN npm install -g yarn@1.22.10 \
     && yarn global add code-server@${VERSION} \
-    && yarn cache clean \
-    && code-server --install-extension tyriar.sort-lines \
-    && code-server --install-extension wmaurer.change-case \
-    && code-server --install-extension adrientoub.base64utils
+    && yarn cache clean
 
 COPY /scripts/entrypoint.sh /entrypoint.sh
+
+RUN adduser -D developer --shell /bin/bash \
+    && echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/nopasswd
+
+USER developer
 
 ENTRYPOINT ["/entrypoint.sh"]
 
