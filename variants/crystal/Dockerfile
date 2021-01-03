@@ -5,6 +5,6 @@ FROM kodelib/code-server:${VERSION}
 USER root
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache crystal shards
+RUN apk add --no-cache crystal@community shards@community
 
 USER kodelib
