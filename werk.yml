@@ -1,18 +1,9 @@
-versio: "1.0"
+version: "1.0"
 
 variables:
   VERSION: "3.8.0"
 
 jobs:
-  main:
-    description: Run code-server locally
-    commands:
-      - >
-        docker run -t --rm 
-        --publish 8080:8080 
-        --env PASSWORD=1234567890 
-        kodelib/code-server-crystal:${VERSION}
-
   lint:
     description: Check all Docker files
     commands:
@@ -22,7 +13,10 @@ jobs:
   build:
     description: Build all image variants
     commands:
-      - docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" "kodelib/code-server*:${VERSION}"
+      - >
+        docker images 
+        --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" 
+        "kodelib/code-server*:${VERSION}"
     needs:
       - build:crystal
       - build:perl
