@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+  # push:
+  #   branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Quality
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+        run: |
+          brew install hadolint
+          find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
+
+      - name: Build images
+        run: |
+          docker-compose build
+
+      - name: Publish images
+        run: |
+          echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+          docker-compose push

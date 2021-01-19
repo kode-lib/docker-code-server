@@ -1,7 +1,9 @@
 version: "1.0"
 
 variables:
+  IMAGE_NAME: "kodelib/code-server"
   VERSION: "3.8.0"
+  REVISION: "0"
 
 jobs:
   lint:
@@ -9,53 +11,3 @@ jobs:
     commands:
       - hadolint --version
       - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
-
-  build:
-    description: Build all image variants
-    commands:
-      - >
-        docker images 
-        --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" 
-        "kodelib/code-server*:${VERSION}"
-    needs:
-      - build:crystal
-      - build:perl
-
-  build:base:
-    description: Build base image
-    variables:
-      IMAGE_NAME: kodelib/code-server
-    commands:
-      - >
-        docker build .
-        --build-arg VERSION="${VERSION}"
-        --tag "${IMAGE_NAME}:${VERSION}"
-
-  build:crystal:
-    variables:
-      IMAGE_NAME: kodelib/code-server-crystal
-    commands:
-      - >
-        docker build ./variants/crystal
-        --build-arg VERSION="${VERSION}"
-        --tag "${IMAGE_NAME}:${VERSION}"
-    needs:
-      - build:base
-
-  build:perl:
-    variables:
-      IMAGE_NAME: kodelib/code-server-perl
-    commands:
-      - >
-        docker build ./variants/perl
-        --build-arg VERSION="${VERSION}"
-        --tag "${IMAGE_NAME}:${VERSION}"
-    needs:
-      - build:base
-
-  push:
-    description: Push images to Docker Registry
-    commands:
-      - docker push kodelib/code-server:$VERSION
-      - docker push kodelib/code-server-crystal:$VERSION
-      - docker push kodelib/code-server-perl:$VERSION
