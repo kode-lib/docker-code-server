@@ -1,10 +1,5 @@
 version: "1.0"
 
-variables:
-  IMAGE_NAME: "kodelib/code-server"
-  VERSION: "3.8.0"
-  REVISION: "0"
-
 jobs:
   lint:
     description: Check all Docker files
