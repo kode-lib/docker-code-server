@@ -31,4 +31,4 @@ The format of the image tag is defined as following:
 * `revision`: The current build revision. This number increments with 1 for each new release. Start with value of 1.
 * `variant`: Represents the image platform variant. Supported values are: **alpine**
 
-Before the release please update the `version` and `revison` values in the .env file. Create a release with the corresponding tag name: `[version]-r[revision]`.
+Before the release please update the `version` and `revision` values in the .env file. Create a release with the corresponding tag name: `[version]-r[revision]`.
