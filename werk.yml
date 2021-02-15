@@ -3,6 +3,7 @@ version: "1.0"
 jobs:
   lint:
     description: Check all Docker files
+    executor: local
     commands:
       - hadolint --version
       - find . -type f -name "Dockerfile*" -print0 | xargs -0 -n1 hadolint
