@@ -28,7 +28,7 @@ The format of the image tag is defined as following:
 [code_server_version]-r[revision]-[variant]
 
 * `version`: The current version of the **code-server** package
-* `revision`: The current build revision. This number increments with 1 for each new release.
+* `revision`: The current build revision. This number increments with 1 for each new release. Start with value of 1.
 * `variant`: Represents the image platform variant. Supported values are:
 ** **alpine**
 
