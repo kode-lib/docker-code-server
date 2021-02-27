@@ -4,12 +4,27 @@ services:
   alpine:
     image: kodelib/code-server:${VERSION}-r${REVISION}-alpine
     build:
-      context: ./variants/alpine
-      args: 
+      context: .
+      dockerfile: ./variants/alpine/Dockerfile
+      args:
         VERSION: ${VERSION}
     command:
       - --host=0.0.0.0
+      - --auth=none
+      - --log=debug
     ports:
       - 8080:8080
-    environment:
-      PASSWORD: 1234567890
+
+  ubuntu:
+    image: kodelib/code-server:${VERSION}-r${REVISION}-ubuntu
+    build:
+      context: .
+      dockerfile: ./variants/ubuntu/Dockerfile
+      args:
+        VERSION: ${VERSION}
+    command:
+      - --host=0.0.0.0
+      - --auth=none
+      - --log=debug
+    ports:
+      - 8081:8080

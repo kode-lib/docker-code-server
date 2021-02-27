@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG VERSION=3.8.0
+ARG VERSION
 
 RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
