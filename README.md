@@ -14,6 +14,7 @@ Leveraging all build and push actions to Docker Comopse:
 Supported variants are:
 
 * **alpine**
+* **ubuntu**
 
 To cleanup the environment just run:
 
@@ -29,6 +30,6 @@ The format of the image tag is defined as following:
 
 * `version`: The current version of the **code-server** package
 * `revision`: The current build revision. This number increments with 1 for each new release. Start with value of 1.
-* `variant`: Represents the image platform variant. Supported values are: **alpine**
+* `variant`: Represents the image platform variant. Supported values are: **alpine**, **ubuntu**
 
 Before the release please update the `version` and `revision` values in the .env file. Create a release with the corresponding tag name: `[version]-r[revision]`.
