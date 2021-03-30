@@ -4,7 +4,7 @@ ARG VERSION
 
 # hadolint ignore=DL3008,DL3015
 RUN apt-get update \
-    && DEBIAN_FRONTEND="noninteractive" apt-get install -y curl sudo \
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y curl sudo zsh git \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 RUN curl -sfOL https://github.com/cdr/code-server/releases/download/v${VERSION}/code-server_${VERSION}_amd64.deb \
