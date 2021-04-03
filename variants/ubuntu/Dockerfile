@@ -7,6 +7,9 @@ RUN apt-get update \
     && DEBIAN_FRONTEND="noninteractive" apt-get install -y curl sudo zsh git \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
+RUN curl -L $(curl -sL https://api.kodelib.com/v1/apps/werk/latest/url) -o /usr/local/bin/werk \
+    && chmod a+x /usr/local/bin/werk
+
 RUN curl -sfOL https://github.com/cdr/code-server/releases/download/v${VERSION}/code-server_${VERSION}_amd64.deb \
     && dpkg -i code-server_${VERSION}_amd64.deb \
     && useradd kodelib -m -d /home/kodelib -s /bin/bash \
