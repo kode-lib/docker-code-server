@@ -7,6 +7,10 @@ Leveraging all build and push actions to Docker Comopse:
     docker-compose build
     docker-compose push
 
+Build step is a bit different for the M1 processor:
+
+    docker-compose build --build-arg ARCH=arm64
+
 ## Local development
 
     docker-compose up --build [variant]
