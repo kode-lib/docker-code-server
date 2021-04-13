@@ -16,11 +16,6 @@ RUN curl -sfL https://github.com/cdr/code-server/releases/download/v${VERSION}/c
     && useradd kodelib -m -d /home/kodelib -s /bin/bash \
     && echo "kodelib ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/nopasswd
 
-# NOTE: This is a patch for 3.9.2 issue on iPad and iPhone
-# Before moving to the next version we probably need to test this out.
-RUN sed -i "s/req.headers\[\"sec-websocket-extensions\"\]/false/g" /usr/lib/code-server/out/node/routes/vscode.js \
-    && sed -i "s/responseHeaders.push(\"Sec-WebSocket-Extensions/\/\/responseHeaders.push(\"Sec-WebSocket-Extensions/g" /usr/lib/code-server/out/node/routes/vscode.js
-
 COPY /scripts/entrypoint.sh /entrypoint.sh
 
 USER kodelib
